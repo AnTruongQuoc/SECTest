@@ -7,6 +7,7 @@ import cors from "cors";
 const app = express();
 const httpServer = createServer(app);
 const port = 3003;
+const clientPort = 8080;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../public")));
@@ -14,7 +15,7 @@ app.use(cors());
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: `http://localhost:${clientPort}`,
   },
 });
 
@@ -52,7 +53,8 @@ app.post("/click", (req, res) => {
 
     io.emit("chart", response);
   }, 5000);
-  res.send("200 OK");
+
+  res.status(200).send("OK");
 });
 
 app.get("/check", (req, res) => {
